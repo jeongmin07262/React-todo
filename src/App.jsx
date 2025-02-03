@@ -27,6 +27,7 @@ const dummyTodos = [
 
 function App() {
   const [todos, setTodos] = useState(dummyTodos);
+  const [selectedCategory, setFilter] = useState('ALL');
 
   // addTodoHandler: 할 일 추가 기능
   const addTodoHandler = (title, summary, category) => {
@@ -53,6 +54,11 @@ function App() {
     setTodos(updatedTodos);
   }
 
+ // 필터링 후 렌더링
+  const filterTodos = () => selectedCategory === 'ALL' ? 
+  todos : todos.filter(todo => todo.category === selectedCategory);
+  const filteredTodos = filterTodos();
+
   return (
     <>
       <DefaultLayout>
@@ -76,8 +82,8 @@ function App() {
         </header>
 
         {/* Todo-List */}
-        <TodoHeader onAdd={addTodoHandler} />
-        <TodoBody todos={todos} onUpdate={updateTodoHandler} onDelete={deleteTodoHandler}/>
+        <TodoHeader onAdd={addTodoHandler} category={selectedCategory} onFilter={setFilter}/>
+        <TodoBody todos={filteredTodos} onUpdate={updateTodoHandler} onDelete={deleteTodoHandler}/>
       </DefaultLayout>
     </>
   );
