@@ -1,5 +1,7 @@
 import "./App.css";
+import TodoBody from "./components/todos/TodoBody";
 import TodoHeader from "./components/todos/TodoHeader";
+import TodoItem from "./components/todos/TodoItem";
 import DefaultLayout from "./layouts/DefaultLayout";
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
 
         {/* Todo-List */}
         <TodoHeader />
+        <TodoBody/>
       </DefaultLayout>
     </>
   );
