@@ -22,31 +22,30 @@ const dummyTodos = [
     title: "커피 마시기",
     summary: "커피를 마신다.",
     category: "DONE",
-  }, //,를 붙여서 새롭게 추가된 할 일 데이터를 넣기
+  },
 ];
 
 function App() {
-  // 할 일 데이터를 하나의 상태로 관리
   const [todos, setTodos] = useState(dummyTodos);
 
-  // TodoForm으로부터 전달받은 사용자의 입력값
+  // addTodoHandler: 할 일 추가 기능
   const addTodoHandler = (title, summary, category) => {
-    // 새롭게 등록할 할 일 객체
     const newTodo = {
-      // ID 식별용 값
       id: self.crypto.randomUUID,
       title,
       summary,
       category,
     };
 
-    // 새롭게 업데이트할 할 일 목록 데이터 생성
-    // [{밥먹기}, {음료수}, {물}, {새로운 할일}];
     const updatedTodos = [...todos, newTodo];
-
-    // 할 일 상태값 갱신
     setTodos(updatedTodos);
   };
+
+  //  updateTodoHandler: 할 일 수정 기능
+  const updateTodoHandler = (updateTodo) => {
+    const updatedTodos = todos.map(todo => todo.id === updateTodo.id ? { ...updateTodo } : todo);
+    setTodos(updatedTodos);
+  }
 
   return (
     <>
@@ -72,7 +71,7 @@ function App() {
 
         {/* Todo-List */}
         <TodoHeader onAdd={addTodoHandler} />
-        <TodoBody todos={todos} />
+        <TodoBody todos={todos} onUpdate={updateTodoHandler}/>
       </DefaultLayout>
     </>
   );

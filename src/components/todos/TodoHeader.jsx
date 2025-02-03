@@ -21,7 +21,9 @@ const TodoHeader = ({onAdd}) => {
         {/* Modal */}
         {openModal && createPortal (
           <Modal>
-            <TodoForm onAdd={onAdd} onClose={() => open(false)}/>
+            <TodoForm onAddOrUpdate={onAdd} onClose={() => open(false)} >
+              할일 등록
+            </TodoForm>
           </Modal>,
           document.body
         )}

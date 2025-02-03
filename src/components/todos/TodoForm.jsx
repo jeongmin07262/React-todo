@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { TODO_CATEGORY_ICON } from "@/constants/icon";
 
-const TodoForm = ({ onClose, onAdd }) => {
-  const [title, setTitle] = useState("");
-  const [summary, setSummary] = useState("");
-  const [category, setCategory] = useState("TODO");
+const TodoForm = ({ onAddOrUpdate, onClose, children, todo }) => {
+    
+  const isNewTodoForm = () => children.endsWith('등록') ? true : false;
 
-  const addTodoHandler = () => {
-    // App.jsx의 addTodoHandler(title, summary, category);와 동일
-    onAdd(title, summary, category);
+  const [title, setTitle] = useState(isNewTodoForm() ? '' : todo.title);
+  const [summary, setSummary] = useState(isNewTodoForm() ? '' : todo.summary);
+  const [category, setCategory] = useState(isNewTodoForm() ? 'TODO' : todo.category);
 
-    // Modal 닫기
-    onClose();
-  };
+  const addOrUpdateTodoHandler = () => {
+      if (isNewTodoForm(children)) {
+        onAddOrUpdate(title, summary, category);
+      } else {
+          const updateTodo = {
+              id: todo.id,
+              title,
+              summary,
+              category
+          }
+          onAddOrUpdate(updateTodo);
+      }
+      onClose();
+  }
 
   return (
     <>
-      <h3 className="text-3xl text-red-200">할일 등록</h3>
+      <h3 className="text-3xl text-red-200">{children}</h3>
       <form className="my-2">
         {/* Title */}
         <div>
@@ -28,7 +38,7 @@ const TodoForm = ({ onClose, onAdd }) => {
             type="text"
             id="title"
             value={title}
-            onChange={(event) => setTitle(event.target.value)}
+            onChange={event => setTitle(event.target.value)}
           />
         </div>
 
@@ -42,7 +52,7 @@ const TodoForm = ({ onClose, onAdd }) => {
             id="summary"
             rows="5"
             value={summary}
-            onChange={(event) => setSummary(event.target.value)}
+            onChange={event => setSummary(event.target.value)}
           />
         </div>
 
@@ -55,7 +65,7 @@ const TodoForm = ({ onClose, onAdd }) => {
             className="w-full p-2 border-[1px] border-gray-300 bg-gray-200 text-gray-900 rounded"
             id="category"
             value={category}
-            onChange={(event) => setCategory(event.target.value)}
+            onChange={event => setCategory(event.target.value)}
           >
             <option value="TODO">{TODO_CATEGORY_ICON.TODO} To do</option>
             <option value="PROGRESS">
@@ -65,20 +75,9 @@ const TodoForm = ({ onClose, onAdd }) => {
           </select>
         </div>
         <div className="flex justify-end gap-4">
-          {/* TodoHeader로부터 props로 전달받은 onClose라는 콜백함수를 onClick 이벤트에 등록 */}
-          <button
-            className="text-xl text-white cursor-pointer"
-            type="button"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-          <button
-            className="px-6 py-3 text-xl text-red-200 cursor-pointer"
-            type="button"
-            onClick={addTodoHandler}
-          >
-            Add
+          <button className='text-xl text-white' type='button' onClick={onClose}>취소</button>
+          <button className='px-6 py-3 text-xl text-red-200' type='button' onClick={addOrUpdateTodoHandler}>
+            {isNewTodoForm(children) ? '등록' : '수정'}
           </button>
         </div>
       </form>
