@@ -47,6 +47,12 @@ function App() {
     setTodos(updatedTodos);
   }
 
+  // deleteTodoHandler: 할 일 삭제 기능
+  const deleteTodoHandler = (id) => {
+    const updatedTodos = todos.filter(todo => todo.id !== id);
+    setTodos(updatedTodos);
+  }
+
   return (
     <>
       <DefaultLayout>
@@ -71,7 +77,7 @@ function App() {
 
         {/* Todo-List */}
         <TodoHeader onAdd={addTodoHandler} />
-        <TodoBody todos={todos} onUpdate={updateTodoHandler}/>
+        <TodoBody todos={todos} onUpdate={updateTodoHandler} onDelete={deleteTodoHandler}/>
       </DefaultLayout>
     </>
   );
